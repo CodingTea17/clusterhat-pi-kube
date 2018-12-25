@@ -1,0 +1,9 @@
+---
+
+- name: Configure dhcpcd.conf for static ip addressing
+  template:
+    src: ./templates/dhcpcd.conf.j2
+    dest: /etc/dhcpcd.conf
+    owner: root
+    group: netdev
+    mode: "u=rw,g=rw,o=r"

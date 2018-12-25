@@ -1,0 +1,38 @@
+---
+
+- name: Configuring timezone ��
+  timezone:
+    name: "{{ raspi_config_timezone }}"
+
+- name: Comment UK locale
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: '^\s*en_GB.UTF-8.*$'
+    line: '#en_GB.UTF-8 UTF-8'
+
+- name: Uncomment US locale
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: '^#\s*en_US.UTF-8.*$'
+    line: 'en_US.UTF-8 UTF-8'
+
+- name: Set LANG
+  shell: echo -e 'LANG=en_US.UTF-8\nLC_ALL=en_US.UTF-8' > /etc/default/locale
+
+- name: Running locale-gen
+  command: locale-gen en_US.UTF-8
+
+- name: Running update-locale
+  command: update-locale en_US.UTF-8
+
+- name: Reszie filesystem
+  command:
+  args:
+    argv:
+      - raspi-config
+      - --expand-rootfs
+
+- name: ensure mem split
+  command: echo gpu_mem={{ raspi_config_memory_split_gpu|quote }} >> /boot/config.txt
+  notify:
+    - apply raspi-config

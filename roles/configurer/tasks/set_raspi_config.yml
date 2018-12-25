@@ -1,0 +1,13 @@
+---
+
+- name: Reszie filesystem
+  command:
+  args:
+    argv:
+      - raspi-config
+      - --expand-rootfs
+
+- name: ensure mem split
+  command: echo gpu_mem={{ raspi_config_memory_split_gpu|quote }} >> /boot/config.txt
+  notify:
+    - apply raspi-config
