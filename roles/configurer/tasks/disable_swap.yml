@@ -1,0 +1,16 @@
+---
+
+- name: Register swap usage status
+  shell: swapon -s | wc -l
+  register: swap_status
+
+- name: Swapoff
+  shell: "{{ item }}"
+  loop: 
+    - dphys-swapfile swapoff
+    - dphys-swapfile uninstall
+    - update-rc.d dphys-swapfile remove
+  when: swap_status.stdout != "1"
+  
+- name: Update /boot/cmdline.txt to enable cgroup memory usage
+  shell: echo "$(head -n1 /boot/cmdline.txt) cgroup_enable=cpuset cgroup_memory=1" > /boot/cmdline.txt

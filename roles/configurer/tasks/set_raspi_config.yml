@@ -7,7 +7,7 @@
       - raspi-config
       - --expand-rootfs
 
-- name: ensure mem split
+- name: Set GPU mem to minimum
   command: echo gpu_mem={{ raspi_config_memory_split_gpu|quote }} >> /boot/config.txt
   notify:
     - apply raspi-config

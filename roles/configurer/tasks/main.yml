@@ -2,4 +2,5 @@
 
 - include_tasks: set_static_ip.yml
 - include_tasks: set_localization.yml
-- include_tasks: set_raspi_config.yml 
+- include_tasks: set_raspi_config.yml
+- include_tasks: disable_swap.yml

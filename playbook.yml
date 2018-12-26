@@ -8,5 +8,5 @@
   vars_files:
     - ./vars/raspi_config.yml
   roles:
-    - configurer
-    - installer
+    - {role: configurer, tags: ['configure']}
+    - {role: installer, tags: ['install']}
