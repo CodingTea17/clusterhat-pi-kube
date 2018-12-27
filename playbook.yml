@@ -2,7 +2,7 @@
 
 - name: Ansible Playbook for Configuring Raspberry Pi Nodes
 
-  hosts: nodes
+  hosts: all
   remote_user: pi
   become: yes
   vars_files:
@@ -10,3 +10,11 @@
   roles:
     - {role: configurer, tags: ['configure']}
     - {role: installer, tags: ['install']}
+
+- name: Master nodes only setup
+
+  hosts: masters
+  remote_user: pi
+  become: yes
+  roles:
+    - {role: masters, tags: ['masters']}
