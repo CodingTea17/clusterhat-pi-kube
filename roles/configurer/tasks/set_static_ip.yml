@@ -7,3 +7,4 @@
     owner: root
     group: netdev
     mode: "u=rw,g=rw,o=r"
+  when: "'nodes' in group_names"

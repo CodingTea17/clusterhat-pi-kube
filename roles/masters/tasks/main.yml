@@ -1,0 +1,9 @@
+---
+
+- name: Check init status
+  stat: path=/etc/kubernetes/kubelet.conf
+  register: init_status
+
+- name: Execute kubeadm init
+  shell: kubeadm init --token-ttl=0
+  when: init_status.stat.exists is defined and not init_status.stat.exists
