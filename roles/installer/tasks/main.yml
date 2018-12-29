@@ -1,5 +1,11 @@
 ---
 
+- name: Retrieve installed packages
+  package_facts:
+    manager: apt
+    
 - include_tasks: install_gen_pkgs.yml
+# Only include on hosts where docker-ce isn't installed
 - include_tasks: install_docker.yml
+  when: '"docker-ce" not in ansible_facts.packages'
 - include_tasks: install_kubernetes.yml

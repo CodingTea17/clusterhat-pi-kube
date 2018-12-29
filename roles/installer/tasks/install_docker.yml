@@ -1,20 +1,18 @@
 ---
 
+- name: Pin docker version for older armv6 architectures
+  set_fact:
+    pinned_version: 18.06.1
+  when: ansible_architecture == "armv6l"
+
 - name: Retrieve installer script
   get_url:
     url: https://get.docker.com
     dest: /tmp/docker-installer.sh
     mode: u=rwx,g=rwx,o=rwx
 
-- name: Enforce version pinning for older armv6l architecture
-  replace:
-    path: /tmp/docker-installer.sh
-    regexp: '$sh_c "apt-get install -y -qq --no-install-recommends docker-ce$pkg_version >/dev/null"'
-    replace: '$sh_c "apt-get install -y -qq --no-install-recommends docker-ce=18.06.1~ce~3-0~raspbian >/dev/null"'
-  when: ansible_architecture == "armv6l"
-
 - name: Exectute Docker installer
-  shell: /bin/sh /tmp/docker-installer.sh
+  shell: VERSION={{ pinned_version }} /tmp/docker-installer.sh
 
 - name: Taking out the trash
   file:
